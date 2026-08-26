@@ -746,7 +746,7 @@ function renderStudent(id){
   const isSelf = SELF_MODE_SID && s.id === SELF_MODE_SID;
 
   app.innerHTML = `
-    <button class="back-btn" onclick="location.hash='#/'">← 학생 목록으로</button>
+    ${isSelf ? '' : `<button class="back-btn" onclick="location.hash='#/'">← 학생 목록으로</button>`}
 
     <div class="profile-head">
       <div class="profile-avatar-col">
@@ -1290,6 +1290,17 @@ function route(){
   const h = location.hash;
   const studentProjectMatch = h.match(/^#\/student\/([^/]+)\/project\/([^/]+)$/);
   const studentMatch = h.match(/^#\/student\/([^/]+)$/);
+
+  // 본인 편집 모드(?sid=)로 들어온 학생은 자기 페이지/자기 작품 상세 밖으로 못 나가게 막는다
+  if(SELF_MODE_SID){
+    const targetStudentId = studentProjectMatch ? studentProjectMatch[1] : (studentMatch ? studentMatch[1] : null);
+    const allowed = h.startsWith('#/admin') === false &&
+      targetStudentId !== null && decodeURIComponent(targetStudentId) === SELF_MODE_SID;
+    if(!allowed){
+      location.hash = `#/student/${SELF_MODE_SID}`;
+      return;
+    }
+  }
 
   if(h.startsWith('#/admin')){
     renderAdmin();
