@@ -57,10 +57,15 @@
     margin-bottom:20px;display:inline-block;
   }
   h1.hero-title{
-    font-family:'Pretendard', sans-serif;font-weight:900;font-size:clamp(34px,5.2vw,58px);
-    line-height:1.08;margin:0 0 20px;letter-spacing:-0.01em;
+    font-family:'Pretendard', sans-serif;font-weight:900;font-size:clamp(30px,4vw,44px);
+    line-height:1.2;margin:0 0 18px;letter-spacing:-0.01em;
   }
-  .hero-desc{max-width:520px;font-size:15.5px;line-height:1.7;color:#4A473F;margin:0;}
+  .hero-desc{max-width:460px;font-size:15.5px;line-height:1.75;color:#4A473F;margin:0 0 22px;}
+  .hero-grid{display:grid;grid-template-columns:1fr 260px;gap:32px;align-items:center;}
+  @media (max-width:760px){ .hero-grid{grid-template-columns:1fr;} .hero-art{display:none;} }
+  .hero-stats{display:flex;gap:22px;flex-wrap:wrap;font-size:12px;color:#4A473F;}
+  .hero-stats b{color:var(--ink);font-weight:700;font-size:15px;font-family:'Pretendard',sans-serif;}
+  .hero-art svg{width:100%;height:auto;}
 
   /* ================= CONTROLS ================= */
   .controls{
@@ -485,11 +490,26 @@ function matchesFilter(s){
 }
 
 function renderHome(){
+  const totalStudents = STUDENTS.length;
+  const totalProjects = PROJECTS.length;
+  const years = PROJECTS.map(p => parseInt((p.date||'').slice(0,4),10)).filter(Boolean);
+  const yearRange = years.length ? `${Math.min(...years)}–${Math.max(...years)}` : '2026–';
+
   app.innerHTML = `
     <header class="hero">
-      <span class="eyebrow">QUESTION · EXPLORE · CREATE</span>
-      <h1 class="hero-title">학생의 생각이<br>작품이 되는 기록.</h1>
-      <p class="hero-desc">큐비아에서 배우고, 탐구하고, 직접 만든 모든 결과물을 하나의 성장 포트폴리오로 쌓아갑니다.</p>
+      <div class="hero-grid">
+        <div>
+          <span class="eyebrow">QUESTION · EXPLORE · CREATE</span>
+          <h1 class="hero-title">질문 하나가,<br>작품 하나가 됩니다</h1>
+          <p class="hero-desc">궁금한 걸 파고들고, 두 손으로 직접 만들어 보고, 그 과정을 기록합니다.<br>큐비아 학생들의 그 여정이 여기 차곡차곡 쌓여갑니다.</p>
+          <div class="hero-stats mono">
+            <span>등록 학생 <b>${totalStudents}</b>명</span>
+            <span>누적 작품 <b>${totalProjects}</b>개</span>
+            <span>${yearRange} 기록 중</span>
+          </div>
+        </div>
+        <div class="hero-art">${heroArtSvg()}</div>
+      </div>
     </header>
 
     <div class="controls">
@@ -512,6 +532,26 @@ function renderHome(){
   document.querySelectorAll('#filters .filter-chip').forEach(btn => {
     btn.addEventListener('click', () => { activeFilter = btn.dataset.f; renderHome(); });
   });
+}
+
+function heroArtSvg(){
+  return `
+  <svg viewBox="0 0 260 220" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="24" cy="30" r="2" fill="var(--line)"/>
+    <circle cx="230" cy="24" r="2" fill="var(--line)"/>
+    <circle cx="240" cy="150" r="2" fill="var(--line)"/>
+    <circle cx="16" cy="120" r="2" fill="var(--line)"/>
+    <path d="M20,190 Q55,175 78,150 Q100,128 118,120 Q145,108 158,80 Q172,52 208,40"
+      stroke="var(--sage)" stroke-width="3" fill="none" stroke-linecap="round" stroke-dasharray="1 10"/>
+    <circle cx="20" cy="190" r="16" fill="#E3ECE3"/>
+    <text x="20" y="196" font-size="15" text-anchor="middle">🔬</text>
+    <circle cx="90" cy="140" r="16" fill="#FBF1DF"/>
+    <text x="90" y="146" font-size="15" text-anchor="middle">🎤</text>
+    <circle cx="150" cy="95" r="16" fill="#E3ECE3"/>
+    <text x="150" y="101" font-size="15" text-anchor="middle">💻</text>
+    <circle cx="208" cy="40" r="18" fill="#EEEBFA"/>
+    <text x="208" y="47" font-size="17" text-anchor="middle">✨</text>
+  </svg>`;
 }
 
 function renderIndexList(){
