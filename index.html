@@ -5,30 +5,36 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>QUVIA STUDENT ARCHIVE</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800;900&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --ink:#0F172A;
-    --paper:#F7F8FA;
-    --stone:#EBEEF3;
-    --line:#DBE0E8;
-    --signal:#2B5797;
-    --signal-bright:#3B82F6;
-    --signal-tint:#E7EEF9;
+    --ink:#2E2C28;
+    --paper:#FBF8F0;
+    --stone:#F2EEE1;
+    --line:#E4DFCE;
+    --signal:#8B7FC9;
+    --signal-bright:#A79BE0;
+    --signal-tint:#EEEBFA;
+    --sage:#7E9B84;
+    --sage-tint:#E6EEE4;
+    --cream-card:#FDF9EC;
     --white:#FFFFFF;
   }
   *{box-sizing:border-box;}
   body{
     margin:0;
-    background:var(--paper);
+    background-color:var(--paper);
+    background-image:radial-gradient(var(--line) 1.1px, transparent 1.1px);
+    background-size:22px 22px;
     color:var(--ink);
-    font-family:'Inter', sans-serif;
+    font-family:'Pretendard', sans-serif;
     -webkit-font-smoothing:antialiased;
   }
   a{color:inherit;text-decoration:none;}
   button{font-family:inherit;}
   .wrap{max-width:1120px;margin:0 auto;padding:0 28px;}
-  .mono{font-family:'IBM Plex Mono', monospace;}
+  .mono{font-family:'Pretendard', sans-serif;}
 
   /* ================= NAV ================= */
   nav.topnav{
@@ -37,18 +43,18 @@
   }
   .topnav-inner{display:flex;justify-content:space-between;align-items:baseline;gap:16px;}
   .topnav-inner > *:nth-child(2){flex:1;text-align:right;margin-right:16px;}
-  .wordmark{font-family:'Archivo', sans-serif;font-weight:900;font-size:16px;letter-spacing:.02em;}
+  .wordmark{font-family:'Pretendard', sans-serif;font-weight:900;font-size:16px;letter-spacing:.02em;}
   .wordmark span{color:var(--signal);}
-  .topnav-tag{font-family:'IBM Plex Mono', monospace;font-size:11.5px;color:#8a8578;letter-spacing:.04em;}
+  .topnav-tag{font-family:'Pretendard', sans-serif;font-size:11.5px;color:#8a8578;letter-spacing:.04em;}
 
   /* ================= HERO (home) ================= */
   header.hero{padding:64px 0 40px;border-bottom:1px solid var(--line);}
   .eyebrow{
-    font-family:'IBM Plex Mono', monospace;font-size:12.5px;letter-spacing:.14em;color:var(--signal);
+    font-family:'Pretendard', sans-serif;font-size:12.5px;letter-spacing:.14em;color:var(--signal);
     margin-bottom:20px;display:block;
   }
   h1.hero-title{
-    font-family:'Archivo', sans-serif;font-weight:900;font-size:clamp(34px,5.2vw,58px);
+    font-family:'Pretendard', sans-serif;font-weight:900;font-size:clamp(34px,5.2vw,58px);
     line-height:1.08;margin:0 0 20px;letter-spacing:-0.01em;
   }
   .hero-desc{max-width:520px;font-size:15.5px;line-height:1.7;color:#4A473F;margin:0;}
@@ -59,65 +65,75 @@
     border-bottom:1px solid var(--line);
   }
   .search-box{
-    font-family:'Inter', sans-serif;font-size:14px;padding:11px 16px;border:1px solid var(--line);
-    border-radius:2px;background:var(--white);width:260px;outline:none;
+    font-family:'Pretendard', sans-serif;font-size:14px;padding:11px 16px;border:1px solid var(--line);
+    border-radius:14px;background:var(--white);width:260px;outline:none;
   }
   .search-box:focus{border-color:var(--ink);}
   .filters{display:flex;gap:8px;flex-wrap:wrap;}
   .filter-chip{
-    font-family:'IBM Plex Mono', monospace;font-size:12px;letter-spacing:.03em;padding:8px 14px;
-    border:1px solid var(--line);border-radius:2px;background:var(--white);cursor:pointer;color:var(--ink);
+    font-family:'Pretendard', sans-serif;font-size:12px;letter-spacing:.03em;padding:8px 14px;
+    border:1px solid var(--line);border-radius:14px;background:var(--white);cursor:pointer;color:var(--ink);
   }
   .filter-chip.active{background:var(--ink);color:var(--paper);border-color:var(--ink);}
-  .result-count{font-family:'IBM Plex Mono', monospace;font-size:12px;color:#8a8578;}
+  .result-count{font-family:'Pretendard', sans-serif;font-size:12px;color:#8a8578;}
 
   /* ================= STUDENT INDEX (home grid) ================= */
-  .index-list{padding:8px 0 80px;}
+  .index-list{padding:8px 0 80px;display:grid;grid-template-columns:repeat(4, 1fr);gap:16px;}
+  @media (max-width:900px){ .index-list{grid-template-columns:repeat(2, 1fr);} }
+  @media (max-width:520px){ .index-list{grid-template-columns:1fr;} }
   .index-row{
-    display:grid;grid-template-columns:64px 52px 1fr auto;align-items:center;gap:18px;
-    padding:22px 0;border-bottom:1px solid var(--line);cursor:pointer;
-    background:none;border-left:none;border-right:none;border-top:none;width:100%;text-align:left;
-    transition:background .12s ease;
+    display:flex;flex-direction:column;align-items:flex-start;gap:10px;
+    padding:22px;border:1px solid var(--line);border-radius:16px;cursor:pointer;
+    background:var(--cream-card);text-align:left;width:100%;
+    transition:transform .12s ease, box-shadow .12s ease;
   }
-  .index-row:hover{background:var(--stone);}
-  .index-no{font-family:'IBM Plex Mono', monospace;font-size:12px;color:#8a8578;}
+  .index-row:hover{transform:translateY(-3px);box-shadow:0 10px 24px -14px rgba(46,44,40,.22);background:var(--cream-card);}
+  .index-no{font-family:'Pretendard', sans-serif;font-size:11px;color:#8a8578;}
+  .index-main{width:100%;}
+  .index-main h3{font-family:'Pretendard', sans-serif;font-weight:800;font-size:18px;margin:0 0 6px;}
+  .index-meta-row{display:flex;gap:6px;flex-wrap:wrap;align-items:center;}
+  .index-counts{
+    display:flex;gap:16px;font-family:'Pretendard', sans-serif;font-size:11px;color:#4A473F;
+    border-top:1px solid var(--line);padding-top:12px;width:100%;
+  }
+  .index-counts b{color:var(--ink);font-weight:600;display:block;font-size:15px;font-family:'Pretendard', sans-serif;}
   .avatar{
     width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;
-    font-family:'Archivo', sans-serif;font-weight:800;font-size:18px;color:#fff;flex:none;
+    font-family:'Pretendard', sans-serif;font-weight:800;font-size:18px;color:#fff;flex:none;
   }
-  .index-main h3{font-family:'Archivo', sans-serif;font-weight:800;font-size:19px;margin:0 0 4px;}
+  .index-main h3{font-family:'Pretendard', sans-serif;font-weight:800;font-size:19px;margin:0 0 4px;}
   .index-meta-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
   .grade-txt{font-size:13px;color:#4A473F;}
   .level-badge{
-    font-family:'IBM Plex Mono', monospace;font-size:10.5px;letter-spacing:.04em;color:var(--signal);
-    background:var(--signal-tint);padding:2px 8px;border-radius:2px;
+    font-family:'Pretendard', sans-serif;font-size:10.5px;letter-spacing:.04em;color:var(--signal);
+    background:var(--signal-tint);padding:2px 8px;border-radius:14px;
   }
   .field-tag{
-    font-family:'IBM Plex Mono', monospace;font-size:10.5px;color:#4A473F;background:var(--stone);
-    padding:2px 8px;border-radius:2px;
+    font-family:'Pretendard', sans-serif;font-size:10.5px;color:#4A473F;background:var(--stone);
+    padding:2px 8px;border-radius:14px;
   }
-  .index-counts{text-align:right;font-family:'IBM Plex Mono', monospace;font-size:11.5px;color:#4A473F;line-height:1.7;white-space:nowrap;}
+  .index-counts{text-align:right;font-family:'Pretendard', sans-serif;font-size:11.5px;color:#4A473F;line-height:1.7;white-space:nowrap;}
   .index-counts b{color:var(--ink);font-weight:600;}
 
   /* ================= STUDENT DETAIL ================= */
   .back-btn{
-    display:inline-flex;align-items:center;gap:6px;font-family:'IBM Plex Mono', monospace;font-size:12.5px;
+    display:inline-flex;align-items:center;gap:6px;font-family:'Pretendard', sans-serif;font-size:12.5px;
     color:var(--signal);background:none;border:0;cursor:pointer;padding:0;margin-bottom:22px;
   }
   .profile-head{padding:40px 0 36px;border-bottom:1px solid var(--line);display:flex;gap:28px;align-items:flex-start;flex-wrap:wrap;}
   .avatar-lg{
     width:96px;height:96px;border-radius:50%;display:flex;align-items:center;justify-content:center;
-    font-family:'Archivo', sans-serif;font-weight:900;font-size:34px;color:#fff;flex:none;
+    font-family:'Pretendard', sans-serif;font-weight:900;font-size:34px;color:#fff;flex:none;
   }
-  .profile-info h1{font-family:'Archivo', sans-serif;font-weight:900;font-size:34px;margin:0 0 8px;}
+  .profile-info h1{font-family:'Pretendard', sans-serif;font-weight:900;font-size:34px;margin:0 0 8px;}
   .profile-sub{display:flex;gap:10px;align-items:center;margin-bottom:14px;flex-wrap:wrap;}
   .profile-intro{max-width:480px;font-size:14.5px;line-height:1.75;color:#4A473F;margin:0 0 16px;}
   .profile-counts{display:flex;gap:26px;flex-wrap:wrap;}
-  .profile-counts div{font-family:'IBM Plex Mono', monospace;font-size:12px;color:#8a8578;}
-  .profile-counts b{display:block;font-family:'Archivo', sans-serif;font-size:22px;color:var(--ink);font-weight:800;}
+  .profile-counts div{font-family:'Pretendard', sans-serif;font-size:12px;color:#8a8578;}
+  .profile-counts b{display:block;font-family:'Pretendard', sans-serif;font-size:22px;color:var(--ink);font-weight:800;}
 
   .ledger-label{
-    font-family:'IBM Plex Mono', monospace;font-size:12px;letter-spacing:.1em;color:#8a8578;
+    font-family:'Pretendard', sans-serif;font-size:12px;letter-spacing:.1em;color:#8a8578;
     text-transform:uppercase;padding:36px 0 4px;
   }
 
@@ -129,92 +145,93 @@
   .ledger-year{position:relative;margin-bottom:6px;}
   .ledger-year-label{
     position:absolute;left:-64px;top:-2px;width:64px;text-align:right;padding-right:20px;
-    font-family:'Archivo', sans-serif;font-weight:900;font-size:20px;color:var(--ink);
+    font-family:'Pretendard', sans-serif;font-weight:900;font-size:20px;color:var(--ink);
   }
   .ledger-year-label::after{
     content:"";position:absolute;right:-4.5px;top:6px;width:9px;height:9px;border-radius:50%;background:var(--signal);
   }
   .ledger-projects{padding:6px 0 26px;display:flex;flex-direction:column;gap:12px;}
   .proj-card{
-    display:flex;gap:14px;align-items:flex-start;background:var(--white);border:1px solid var(--line);
-    border-radius:2px;padding:16px 18px;cursor:pointer;transition:transform .12s ease, box-shadow .12s ease;
+    display:flex;gap:14px;align-items:flex-start;background:var(--cream-card);border:1px solid var(--line);
+    border-radius:14px;padding:16px 18px;cursor:pointer;transition:transform .12s ease, box-shadow .12s ease;
   }
   .proj-card:hover{transform:translateX(3px);box-shadow:-3px 0 0 var(--signal);}
   .proj-type-icon{font-size:20px;flex:none;width:26px;text-align:center;}
-  .proj-card h4{font-family:'Archivo', sans-serif;font-weight:800;font-size:15.5px;margin:0 0 4px;}
+  .proj-card h4{font-family:'Pretendard', sans-serif;font-weight:800;font-size:15.5px;margin:0 0 4px;}
   .proj-card p{font-size:13px;color:#4A473F;margin:0 0 6px;line-height:1.5;}
   .proj-meta{display:flex;gap:8px;flex-wrap:wrap;}
-  .type-tag{font-family:'IBM Plex Mono', monospace;font-size:10px;letter-spacing:.04em;padding:2px 7px;border-radius:2px;}
-  .type-tag.program{background:#E7EEFA;color:#2F5AA8;}
+  .type-tag{font-family:'Pretendard', sans-serif;font-size:10px;letter-spacing:.04em;padding:2px 7px;border-radius:14px;}
+  .type-tag.program{background:var(--sage-tint);color:#5C7862;}
   .type-tag.report{background:#FBF1DF;color:#B5791C;}
-  .type-tag.presentation{background:#E9F3EC;color:#3F7A57;}
+  .type-tag.presentation{background:var(--sage-tint);color:#5C7862;}
   .type-tag.aiProject{background:var(--signal-tint);color:var(--signal);}
-  .date-tag{font-family:'IBM Plex Mono', monospace;font-size:10px;color:#8a8578;}
+  .date-tag{font-family:'Pretendard', sans-serif;font-size:10px;color:#8a8578;}
 
   /* ================= PROJECT DETAIL ================= */
   .proj-hero{
     padding:36px 0 0;
   }
   .proj-hero-img{
-    width:100%;height:280px;border-radius:2px;margin:20px 0 30px;
+    width:100%;height:280px;border-radius:14px;margin:20px 0 30px;
     display:flex;align-items:center;justify-content:center;font-size:52px;color:rgba(255,255,255,.85);
+    object-fit:cover;
   }
-  h1.proj-title{font-family:'Archivo', sans-serif;font-weight:900;font-size:clamp(26px,4vw,40px);margin:0 0 10px;line-height:1.12;}
+  h1.proj-title{font-family:'Pretendard', sans-serif;font-weight:900;font-size:clamp(26px,4vw,40px);margin:0 0 10px;line-height:1.12;}
   .proj-top-meta{display:flex;gap:10px;align-items:center;margin-bottom:20px;flex-wrap:wrap;}
 
   .proj-body{display:grid;grid-template-columns:1fr 260px;gap:48px;padding:10px 0 70px;}
   @media (max-width:760px){ .proj-body{grid-template-columns:1fr;} }
   .proj-section{margin-bottom:30px;}
   .proj-section h3{
-    font-family:'IBM Plex Mono', monospace;font-size:12px;letter-spacing:.08em;color:#8a8578;
+    font-family:'Pretendard', sans-serif;font-size:12px;letter-spacing:.08em;color:#8a8578;
     text-transform:uppercase;margin:0 0 10px;
   }
   .proj-section p{font-size:14.5px;line-height:1.8;color:#2b291f;margin:0;white-space:pre-line;}
 
   .side-box{border-top:1px solid var(--line);padding-top:22px;}
-  .side-label{font-family:'IBM Plex Mono', monospace;font-size:11px;letter-spacing:.08em;color:#8a8578;text-transform:uppercase;margin-bottom:10px;}
+  .side-label{font-family:'Pretendard', sans-serif;font-size:11px;letter-spacing:.08em;color:#8a8578;text-transform:uppercase;margin-bottom:10px;}
   .chip-wrap{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:24px;}
   .chip-plain{
-    font-family:'IBM Plex Mono', monospace;font-size:11px;background:var(--stone);color:#4A473F;
-    padding:4px 9px;border-radius:2px;
+    font-family:'Pretendard', sans-serif;font-size:11px;background:var(--stone);color:#4A473F;
+    padding:4px 9px;border-radius:14px;
   }
   .action-btn{
     display:flex;align-items:center;justify-content:center;gap:8px;width:100%;
-    font-family:'IBM Plex Mono', monospace;font-size:13px;padding:13px 16px;border-radius:2px;
+    font-family:'Pretendard', sans-serif;font-size:13px;padding:13px 16px;border-radius:14px;
     border:1px solid var(--ink);background:var(--ink);color:var(--paper);cursor:pointer;margin-bottom:10px;
   }
   .action-btn.outline{background:none;color:var(--ink);}
   .action-btn:hover{background:var(--signal);border-color:var(--signal);color:#fff;}
-  .demo-note{font-family:'IBM Plex Mono', monospace;font-size:11px;color:#8a8578;line-height:1.6;margin-top:8px;}
+  .demo-note{font-family:'Pretendard', sans-serif;font-size:11px;color:#8a8578;line-height:1.6;margin-top:8px;}
 
   .media-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;}
   .media-grid div{
-    height:110px;border-radius:2px;display:flex;align-items:center;justify-content:center;
+    height:110px;border-radius:14px;display:flex;align-items:center;justify-content:center;
     color:rgba(255,255,255,.8);font-size:22px;
   }
 
-  footer.site-footer{border-top:1px solid var(--line);padding:26px 0 50px;font-family:'IBM Plex Mono', monospace;font-size:11.5px;color:#8a8578;}
+  footer.site-footer{border-top:1px solid var(--line);padding:26px 0 50px;font-family:'Pretendard', sans-serif;font-size:11.5px;color:#8a8578;}
 
   /* ================= ADMIN ================= */
   .admin-wrap{padding:44px 0 70px;max-width:640px;}
   .admin-login{max-width:360px;padding-top:80px;}
-  .admin-title{font-family:'Archivo', sans-serif;font-weight:900;font-size:28px;margin:0 0 24px;}
+  .admin-title{font-family:'Pretendard', sans-serif;font-weight:900;font-size:28px;margin:0 0 24px;}
   .admin-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:26px;}
   .admin-tabs{display:flex;gap:8px;border-bottom:1px solid var(--line);margin-bottom:24px;}
   .admin-tab{
-    font-family:'IBM Plex Mono', monospace;font-size:12.5px;padding:10px 4px;margin-right:18px;
+    font-family:'Pretendard', sans-serif;font-size:12.5px;padding:10px 4px;margin-right:18px;
     background:none;border:0;border-bottom:2px solid transparent;cursor:pointer;color:#8a8578;
   }
   .admin-tab.active{color:var(--ink);border-bottom-color:var(--signal);}
   .edit-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;}
   .edit-row input[type="text"], .edit-row input[type="email"], .edit-row input[type="password"], .edit-row input[type="date"]{
-    font-family:'Inter', sans-serif;font-size:13.5px;padding:9px 10px;border:1px solid var(--line);
-    border-radius:2px;flex:1;min-width:140px;outline:none;
+    font-family:'Pretendard', sans-serif;font-size:13.5px;padding:9px 10px;border:1px solid var(--line);
+    border-radius:14px;flex:1;min-width:140px;outline:none;
   }
   .edit-row input:focus{border-color:var(--signal);}
   .admin-form select{
-    font-family:'Inter', sans-serif;font-size:13.5px;padding:9px 10px;border:1px solid var(--line);
-    border-radius:2px;background:var(--white);flex:1;min-width:140px;
+    font-family:'Pretendard', sans-serif;font-size:13.5px;padding:9px 10px;border:1px solid var(--line);
+    border-radius:14px;background:var(--white);flex:1;min-width:140px;
   }
   .admin-msg{margin-top:10px;color:#8a8578;min-height:16px;}
   .admin-error{margin-top:10px;color:#B5391F;}
@@ -222,7 +239,7 @@
     display:flex;justify-content:space-between;align-items:center;padding:10px 0;
     border-bottom:1px solid var(--line);font-size:13.5px;
   }
-  .del-btn{background:none;border:1px solid var(--line);border-radius:2px;padding:5px 10px;cursor:pointer;color:#B5391F;font-size:11px;}
+  .del-btn{background:none;border:1px solid var(--line);border-radius:14px;padding:5px 10px;cursor:pointer;color:#B5391F;font-size:11px;}
 </style>
 </head>
 <body>
@@ -281,7 +298,7 @@ if(isConfigured){
    MOCK DATA — Firebase 미설정 상태이거나 컬렉션이 비어있을 때
    화면 확인용으로 대신 표시되는 예시 데이터입니다.
    ================================================================ */
-const LEVEL_COLORS = { Sense:'#7C8A6E', Spark:'#C9822E', Probe:'#2F5AA8', Build:'#B5391F', Master:'#0F172A' };
+const LEVEL_COLORS = { Sense:'#8FA98F', Spark:'#D0A24C', Probe:'#8B7FC9', Build:'#C97C5C', Master:'#2E2C28' };
 
 const MOCK_STUDENTS = [
   {
@@ -417,10 +434,10 @@ const initial = name => (name||'?').slice(0,1);
 const levelColor = lvl => LEVEL_COLORS[lvl] || '#999';
 
 const TYPE_META = {
-  program:      { icon:'💻', label:'PROGRAM' },
-  report:       { icon:'🔬', label:'REPORT' },
-  presentation: { icon:'🎤', label:'PRESENTATION' },
-  aiProject:    { icon:'✨', label:'AI PROJECT' },
+  program:      { icon:'💻', label:'프로그램' },
+  report:       { icon:'🔬', label:'보고서' },
+  presentation: { icon:'🎤', label:'발표자료' },
+  aiProject:    { icon:'✨', label:'AI프로젝트' },
 };
 
 function projectsOf(studentId){ return PROJECTS.filter(p => p.studentId === studentId); }
@@ -490,21 +507,26 @@ function renderIndexList(){
 
   list.innerHTML = filtered.map((s, i) => {
     const c = counts(s.id);
+    const avatarBig = s.profileImageUrl
+      ? `<img src="${s.profileImageUrl}" alt="${esc(s.name)}" style="width:56px;height:56px;border-radius:50%;object-fit:cover;">`
+      : `<span class="avatar" style="width:56px;height:56px;font-size:20px;background:${levelColor(s.level)}">${esc(initial(s.name))}</span>`;
     return `
     <button class="index-row" data-id="${s.id}">
       <span class="index-no mono">NO. ${String(i+1).padStart(3,'0')}</span>
-      <span class="avatar" style="background:${levelColor(s.level)}">${esc(initial(s.name))}</span>
+      ${avatarBig}
       <span class="index-main">
         <h3>${esc(s.name)}</h3>
         <span class="index-meta-row">
           <span class="grade-txt">${esc(s.grade)}</span>
+        </span>
+        <span class="index-meta-row" style="margin-top:6px;">
           <span class="level-badge mono">LEVEL · ${esc(s.level)}</span>
           ${s.fields.map(f => `<span class="field-tag mono">${esc(f)}</span>`).join('')}
         </span>
       </span>
       <span class="index-counts">
-        <span>PROJECTS <b>${c.total}</b></span><br>
-        <span>REPORTS <b>${c.report}</b></span>
+        <span>작품 수<b>${c.total}</b></span>
+        <span>보고서<b>${c.report}</b></span>
       </span>
     </button>`;
   }).join('');
@@ -598,35 +620,43 @@ function renderProject(studentId, projectId){
   if(!s || !p){ app.innerHTML = `<div class="demo-note" style="padding:60px 0;">작품을 찾을 수 없습니다.</div>`; return; }
   const meta = TYPE_META[p.type];
 
+  function extraDocsHtml(p){
+    let html = '';
+    if(p.pdfUrl) html += `<button class="action-btn outline" onclick="window.open('${p.pdfUrl}','_blank')">📄 PDF 보기</button>`;
+    if(p.docxUrl) html += `<button class="action-btn outline" onclick="window.open('${p.docxUrl}','_blank')">⬇ DOCX 다운로드</button>`;
+    return html;
+  }
+
   let actionsHtml = '';
   if(p.type === 'program'){
     actionsHtml = `
       <button class="action-btn" onclick="window.open('${p.playUrl}','_blank')">🚀 프로그램 실행하기</button>
       <button class="action-btn outline" onclick="window.open('${p.githubUrl}','_blank')">⌘ GitHub 코드 보기</button>
-      <div class="demo-note">프로토타입 링크입니다 — 실제 연동 시 GitHub Pages / Repository 주소로 연결됩니다.</div>`;
+      ${extraDocsHtml(p)}
+      <div class="demo-note">GitHub Pages / Repository 주소로 연결됩니다.</div>`;
   } else if(p.type === 'report'){
     actionsHtml = `
-      <button class="action-btn" onclick="window.open('${p.pdfUrl}','_blank')">📄 보고서 보기</button>
-      <button class="action-btn outline" onclick="window.open('${p.docxUrl}','_blank')">⬇ DOCX 다운로드</button>
-      <div class="demo-note">프로토타입 링크입니다 — 실제 연동 시 Storage에 업로드된 PDF/DOCX로 연결됩니다.</div>`;
+      ${p.pdfUrl ? `<button class="action-btn" onclick="window.open('${p.pdfUrl}','_blank')">📄 보고서 보기</button>` : ''}
+      ${p.docxUrl ? `<button class="action-btn outline" onclick="window.open('${p.docxUrl}','_blank')">⬇ DOCX 다운로드</button>` : ''}`;
   } else if(p.type === 'presentation'){
     actionsHtml = `
-      <button class="action-btn" onclick="window.open('${p.pdfUrl}','_blank')">📄 PDF 보기</button>
-      <button class="action-btn outline" onclick="window.open('${p.pptxUrl}','_blank')">⬇ PPTX 다운로드</button>
-      <div class="demo-note">프로토타입 링크입니다 — 실제 연동 시 Storage에 업로드된 PDF/PPTX로 연결됩니다.</div>`;
+      ${p.pdfUrl ? `<button class="action-btn" onclick="window.open('${p.pdfUrl}','_blank')">📄 PDF 보기</button>` : ''}
+      ${p.pptxUrl ? `<button class="action-btn outline" onclick="window.open('${p.pptxUrl}','_blank')">⬇ PPTX 다운로드</button>` : ''}`;
   } else if(p.type === 'aiProject'){
     actionsHtml = `
       <div class="side-label mono">미디어</div>
       <div class="media-grid">
-        ${p.mediaUrls.map((_,i) => `<div style="background:${levelColor(s.level)}">✨</div>`).join('')}
+        ${(p.mediaUrls||[]).map(url => `<img src="${url}" alt="미디어" style="width:100%;height:110px;object-fit:cover;border-radius:14px;">`).join('') || '<div class="demo-note">등록된 미디어가 없습니다.</div>'}
       </div>
-      <div class="demo-note" style="margin-top:10px;">실제 연동 시 업로드된 이미지/영상이 표시됩니다.</div>`;
+      ${extraDocsHtml(p)}`;
   }
 
   app.innerHTML = `
     <div class="proj-hero">
       <button class="back-btn" onclick="location.hash='#/student/${s.id}'">← ${esc(s.name)}의 포트폴리오로</button>
-      <div class="proj-hero-img" style="background:${levelColor(s.level)}">${meta.icon}</div>
+      ${p.thumbnailUrl
+        ? `<img class="proj-hero-img" src="${p.thumbnailUrl}" alt="${esc(p.title)}">`
+        : `<div class="proj-hero-img" style="background:${levelColor(s.level)}">${meta.icon}</div>`}
       <h1 class="proj-title">${esc(p.title)}</h1>
       <div class="proj-top-meta">
         <span class="type-tag ${p.type} mono">${meta.label}</span>
@@ -797,7 +827,7 @@ function renderStudentForm(body){
         </select>
       </div>
       <div class="edit-row"><input type="text" id="f_fields" placeholder="분야 (쉼표로 구분, 예: Python, AI)"></div>
-      <div class="edit-row"><textarea id="f_intro" rows="3" placeholder="자기소개" style="width:100%;font-family:inherit;padding:10px;border:1px solid var(--line);border-radius:2px;"></textarea></div>
+      <div class="edit-row"><textarea id="f_intro" rows="3" placeholder="자기소개" style="width:100%;font-family:inherit;padding:10px;border:1px solid var(--line);border-radius:14px;"></textarea></div>
       <div class="edit-row"><label class="mono" style="font-size:12px;">프로필 이미지 <input type="file" id="f_profileImg" accept="image/*"></label></div>
       <button class="action-btn" id="saveStudentBtn" style="width:auto;padding:12px 22px;">학생 저장</button>
       <div class="admin-msg mono" id="studentMsg"></div>
@@ -844,17 +874,17 @@ function renderProjectForm(body){
       <div class="edit-row">
         <select id="f_studentId">${studentOptions || '<option disabled>등록된 학생이 없습니다</option>'}</select>
         <select id="f_type">
-          <option value="program">PROGRAM</option>
-          <option value="report">REPORT</option>
-          <option value="presentation">PRESENTATION</option>
-          <option value="aiProject">AI PROJECT</option>
+          <option value="program">프로그램</option>
+          <option value="report">보고서</option>
+          <option value="presentation">발표자료</option>
+          <option value="aiProject">AI프로젝트</option>
         </select>
       </div>
       <div class="edit-row"><input type="text" id="f_title" placeholder="작품 제목"></div>
       <div class="edit-row"><input type="date" id="f_date"></div>
-      <div class="edit-row"><textarea id="f_desc" rows="2" placeholder="작품 설명" style="width:100%;font-family:inherit;padding:10px;border:1px solid var(--line);border-radius:2px;"></textarea></div>
-      <div class="edit-row"><textarea id="f_process" rows="3" placeholder="탐구/제작 과정" style="width:100%;font-family:inherit;padding:10px;border:1px solid var(--line);border-radius:2px;"></textarea></div>
-      <div class="edit-row"><textarea id="f_learnings" rows="2" placeholder="배운 점" style="width:100%;font-family:inherit;padding:10px;border:1px solid var(--line);border-radius:2px;"></textarea></div>
+      <div class="edit-row"><textarea id="f_desc" rows="2" placeholder="작품 설명" style="width:100%;font-family:inherit;padding:10px;border:1px solid var(--line);border-radius:14px;"></textarea></div>
+      <div class="edit-row"><textarea id="f_process" rows="3" placeholder="탐구/제작 과정" style="width:100%;font-family:inherit;padding:10px;border:1px solid var(--line);border-radius:14px;"></textarea></div>
+      <div class="edit-row"><textarea id="f_learnings" rows="2" placeholder="배운 점" style="width:100%;font-family:inherit;padding:10px;border:1px solid var(--line);border-radius:14px;"></textarea></div>
       <div class="edit-row"><input type="text" id="f_tech" placeholder="사용 기술 (쉼표 구분)"></div>
       <div class="edit-row"><input type="text" id="f_tags" placeholder="태그 (쉼표 구분)"></div>
 
@@ -870,7 +900,9 @@ function renderProjectForm(body){
     if(type === 'program'){
       box.innerHTML = `
         <div class="edit-row"><input type="text" id="f_github" placeholder="GitHub Repository URL"></div>
-        <div class="edit-row"><input type="text" id="f_play" placeholder="GitHub Pages 실행 URL"></div>`;
+        <div class="edit-row"><input type="text" id="f_play" placeholder="GitHub Pages 실행 URL"></div>
+        <div class="edit-row"><label class="mono" style="font-size:12px;">DOCX 파일 (선택) <input type="file" id="f_docx" accept=".docx"></label></div>
+        <div class="edit-row"><label class="mono" style="font-size:12px;">PDF 파일 (선택) <input type="file" id="f_pdf" accept=".pdf"></label></div>`;
     } else if(type === 'report'){
       box.innerHTML = `
         <div class="edit-row"><label class="mono" style="font-size:12px;">DOCX 파일 <input type="file" id="f_docx" accept=".docx"></label></div>
@@ -881,7 +913,9 @@ function renderProjectForm(body){
         <div class="edit-row"><label class="mono" style="font-size:12px;">PDF 파일 (선택) <input type="file" id="f_pdf" accept=".pdf"></label></div>`;
     } else if(type === 'aiProject'){
       box.innerHTML = `
-        <div class="edit-row"><label class="mono" style="font-size:12px;">이미지/영상 여러 장 <input type="file" id="f_media" accept="image/*,video/*" multiple></label></div>`;
+        <div class="edit-row"><label class="mono" style="font-size:12px;">이미지/영상 여러 장 <input type="file" id="f_media" accept="image/*,video/*" multiple></label></div>
+        <div class="edit-row"><label class="mono" style="font-size:12px;">DOCX 파일 (선택) <input type="file" id="f_docx" accept=".docx"></label></div>
+        <div class="edit-row"><label class="mono" style="font-size:12px;">PDF 파일 (선택) <input type="file" id="f_pdf" accept=".pdf"></label></div>`;
     }
     box.innerHTML += `<div class="edit-row"><label class="mono" style="font-size:12px;">대표 이미지(썸네일) <input type="file" id="f_thumb" accept="image/*"></label></div>`;
   }
@@ -922,6 +956,8 @@ function renderProjectForm(body){
       if(type === 'program'){
         data.githubUrl = document.getElementById('f_github').value.trim();
         data.playUrl = document.getElementById('f_play').value.trim();
+        data.docxUrl = await uploadIfPresent('f_docx', 'programs');
+        data.pdfUrl = await uploadIfPresent('f_pdf', 'programs');
       } else if(type === 'report'){
         data.docxUrl = await uploadIfPresent('f_docx', 'reports');
         data.pdfUrl = await uploadIfPresent('f_pdf', 'reports');
@@ -937,6 +973,8 @@ function renderProjectForm(body){
           urls.push(await getDownloadURL(sref));
         }
         data.mediaUrls = urls;
+        data.docxUrl = await uploadIfPresent('f_docx', 'aiProjects');
+        data.pdfUrl = await uploadIfPresent('f_pdf', 'aiProjects');
       }
 
       await addDoc(collection(db,'projects'), data);
