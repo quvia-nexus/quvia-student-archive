@@ -37,51 +37,72 @@
   .mono{font-family:'Pretendard', sans-serif;}
 
   /* ================= NAV ================= */
+  :root{
+    --dark-bg:#15130F;
+    --dark-line:#2E2B24;
+    --gold:#D9A441;
+    --gold-soft:#3A2F1C;
+  }
   nav.topnav{
-    border-bottom:1px solid var(--line);
-    border-top:5px solid var(--sage);
     padding:16px 0;
-    background:var(--white);
+    background:var(--dark-bg);
   }
   .topnav-inner{display:flex;justify-content:space-between;align-items:center;gap:16px;}
   .brand{display:flex;align-items:center;gap:12px;}
   .brand-mark{
-    width:38px;height:38px;border-radius:10px;background:var(--sage);color:#fff;
+    width:38px;height:38px;border-radius:10px;background:var(--gold);color:#241F1A;
     display:flex;align-items:center;justify-content:center;
     font-family:'Pretendard', sans-serif;font-weight:800;font-size:18px;flex:none;
   }
   .brand-text{display:flex;flex-direction:column;line-height:1.25;}
-  .brand-text b{font-family:'Pretendard', sans-serif;font-weight:800;font-size:15px;letter-spacing:.01em;}
-  .brand-text em{font-style:normal;font-size:11px;color:#8a8578;letter-spacing:.02em;}
+  .brand-text b{font-family:'Pretendard', sans-serif;font-weight:800;font-size:15px;letter-spacing:.01em;color:#fff;}
+  .brand-text em{font-style:normal;font-size:11px;color:#9A9384;letter-spacing:.06em;}
   .topbar-right{display:flex;align-items:center;gap:14px;}
   .status{
-    font-family:'Pretendard', sans-serif;font-size:11px;color:#8a8578;letter-spacing:.02em;
+    font-family:'Pretendard', sans-serif;font-size:11px;color:#9A9384;letter-spacing:.02em;
     display:flex;align-items:center;gap:6px;
   }
-  .status i{width:6px;height:6px;border-radius:50%;background:var(--sage);display:inline-block;flex:none;}
+  .status i{width:6px;height:6px;border-radius:50%;background:#6FA88A;display:inline-block;flex:none;}
   .ghost-btn{
-    font-family:'Pretendard', sans-serif;font-size:12.5px;font-weight:600;color:var(--sage);
-    border:1px solid var(--sage);padding:7px 16px;border-radius:20px;text-decoration:none;
+    font-family:'Pretendard', sans-serif;font-size:12.5px;font-weight:600;color:#fff;
+    border:1px solid rgba(255,255,255,.35);padding:7px 16px;border-radius:20px;text-decoration:none;
   }
-  .ghost-btn:hover{background:var(--sage-tint);}
+  .ghost-btn:hover{background:rgba(255,255,255,.08);}
 
   /* ================= HERO (home) ================= */
-  header.hero{padding:64px 0 40px;border-bottom:1px solid var(--line);}
+  header.hero{padding:64px 0 56px;background:var(--dark-bg);}
   .eyebrow{
-    font-family:'Pretendard', sans-serif;font-weight:700;font-size:12.5px;letter-spacing:.1em;color:var(--signal);
-    background:var(--signal-tint);padding:6px 14px;border-radius:20px;
-    margin-bottom:20px;display:inline-block;
+    font-family:'Pretendard', sans-serif;font-weight:700;font-size:12.5px;letter-spacing:.18em;color:var(--gold);
+    margin-bottom:22px;display:flex;align-items:center;gap:10px;
   }
+  .eyebrow::before{content:"";display:inline-block;width:26px;height:1px;background:var(--gold);}
   h1.hero-title{
-    font-family:'Pretendard', sans-serif;font-weight:900;font-size:clamp(30px,4vw,44px);
-    line-height:1.2;margin:0 0 18px;letter-spacing:-0.01em;
+    font-family:'Pretendard', sans-serif;font-weight:900;font-size:clamp(32px,4.4vw,50px);
+    line-height:1.2;margin:0 0 18px;letter-spacing:-0.01em;color:#fff;
   }
-  .hero-desc{max-width:460px;font-size:15.5px;line-height:1.75;color:#4A473F;margin:0 0 22px;}
-  .hero-grid{display:grid;grid-template-columns:1fr 260px;gap:32px;align-items:center;}
+  .hero-highlight{color:var(--gold);border-bottom:6px solid var(--gold-soft);padding-bottom:2px;}
+  .hero-desc{max-width:460px;font-size:15.5px;line-height:1.75;color:#B7B0A0;margin:0;}
+  .hero-grid{display:grid;grid-template-columns:1fr 300px;gap:32px;align-items:center;}
   @media (max-width:760px){ .hero-grid{grid-template-columns:1fr;} .hero-art{display:none;} }
-  .hero-stats{display:flex;gap:22px;flex-wrap:wrap;font-size:12px;color:#4A473F;}
-  .hero-stats b{color:var(--ink);font-weight:700;font-size:15px;font-family:'Pretendard',sans-serif;}
-  .hero-art svg{width:100%;height:auto;}
+
+  .hero-art-card{
+    background:#1D1A15;border:1px solid var(--dark-line);border-radius:16px;padding:22px;
+  }
+  .hero-art-label{
+    font-family:'Pretendard', sans-serif;font-size:11px;letter-spacing:.14em;color:#9A9384;margin-bottom:6px;
+  }
+  .hero-art svg{width:100%;height:auto;display:block;margin-bottom:10px;}
+  .growth-legend{list-style:none;margin:0;padding:0;border-top:1px solid var(--dark-line);}
+  .growth-legend li{
+    display:flex;align-items:center;gap:8px;padding:9px 0;
+    font-family:'Pretendard', sans-serif;font-size:12.5px;color:#D8D3C6;
+    border-bottom:1px solid var(--dark-line);
+  }
+  .growth-legend li:last-child{border-bottom:none;}
+  .growth-legend .dot{width:8px;height:8px;border-radius:50%;flex:none;}
+  .growth-legend .phrase{flex:1;}
+  .growth-legend .level-name{font-size:10.5px;letter-spacing:.08em;color:#8a8578;}
+
 
   /* ================= CONTROLS ================= */
   .controls{
@@ -533,10 +554,10 @@ function renderHome(){
       <div class="hero-grid">
         <div>
           <span class="eyebrow">QUESTION · EXPLORE · CREATE</span>
-          <h1 class="hero-title">학생의 생각이<br>작품이 되는 기록.</h1>
+          <h1 class="hero-title">학생의 생각이<br><span class="hero-highlight">작품이 되는</span> 기록.</h1>
           <p class="hero-desc">궁금한 걸 파고들고, 두 손으로 직접 만들어 보고, 그 과정을 기록합니다.<br>큐비아 학생들의 그 여정이 여기 차곡차곡 쌓여갑니다.</p>
         </div>
-        <div class="hero-art">${heroArtSvg()}</div>
+        <div class="hero-art">${growthPathArt()}</div>
       </div>
     </header>
 
@@ -561,24 +582,36 @@ function renderHome(){
   });
 }
 
-function heroArtSvg(){
+const GROWTH_LEVELS = [
+  { level:'Sense',  color:'#D9A441', phrase:'관찰하고 질문한다',       pos:[26,192] },
+  { level:'Spark',  color:'#8B7FC9', phrase:'아이디어에 불을 붙인다',   pos:[78,155] },
+  { level:'Probe',  color:'#6FA88A', phrase:'깊이 파고들어 탐구한다',   pos:[132,118] },
+  { level:'Build',  color:'#C97C5C', phrase:'코드로 구현한다',         pos:[186,78]  },
+  { level:'Master', color:'#F2C879', phrase:'AI로 확장한다',           pos:[228,42]  },
+];
+
+function growthPathArt(){
+  const pathD = GROWTH_LEVELS.map((n,i) => (i===0?'M':'L') + n.pos[0] + ',' + n.pos[1]).join(' ');
+  const nodes = GROWTH_LEVELS.map(n => `
+    <circle cx="${n.pos[0]}" cy="${n.pos[1]}" r="9" fill="${n.color}"/>
+  `).join('');
+  const legend = GROWTH_LEVELS.map(n => `
+    <li>
+      <span class="dot" style="background:${n.color}"></span>
+      <span class="phrase">${esc(n.phrase)}</span>
+      <span class="level-name mono">${n.level.toUpperCase()}</span>
+    </li>
+  `).join('');
+
   return `
-  <svg viewBox="0 0 260 220" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="24" cy="30" r="2" fill="var(--line)"/>
-    <circle cx="230" cy="24" r="2" fill="var(--line)"/>
-    <circle cx="240" cy="150" r="2" fill="var(--line)"/>
-    <circle cx="16" cy="120" r="2" fill="var(--line)"/>
-    <path d="M20,190 Q55,175 78,150 Q100,128 118,120 Q145,108 158,80 Q172,52 208,40"
-      stroke="var(--sage)" stroke-width="3" fill="none" stroke-linecap="round" stroke-dasharray="1 10"/>
-    <circle cx="20" cy="190" r="16" fill="#E3ECE3"/>
-    <text x="20" y="196" font-size="15" text-anchor="middle">🔬</text>
-    <circle cx="90" cy="140" r="16" fill="#FBF1DF"/>
-    <text x="90" y="146" font-size="15" text-anchor="middle">🎤</text>
-    <circle cx="150" cy="95" r="16" fill="#E3ECE3"/>
-    <text x="150" y="101" font-size="15" text-anchor="middle">💻</text>
-    <circle cx="208" cy="40" r="18" fill="#EEEBFA"/>
-    <text x="208" y="47" font-size="17" text-anchor="middle">✨</text>
-  </svg>`;
+    <div class="hero-art-card">
+      <div class="hero-art-label mono">GROWTH PATH</div>
+      <svg viewBox="0 0 254 220" xmlns="http://www.w3.org/2000/svg">
+        <path d="${pathD}" stroke="#5A4B2A" stroke-width="2" fill="none" stroke-linecap="round" stroke-dasharray="1 9"/>
+        ${nodes}
+      </svg>
+      <ul class="growth-legend">${legend}</ul>
+    </div>`;
 }
 
 function renderIndexList(){
