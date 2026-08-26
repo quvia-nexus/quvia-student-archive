@@ -40,14 +40,30 @@
   nav.topnav{
     border-bottom:1px solid var(--line);
     border-top:5px solid var(--sage);
-    padding:20px 0;
+    padding:16px 0;
     background:var(--white);
   }
-  .topnav-inner{display:flex;justify-content:space-between;align-items:baseline;gap:16px;}
-  .topnav-inner > *:nth-child(2){flex:1;text-align:right;margin-right:16px;}
-  .wordmark{font-family:'Pretendard', sans-serif;font-weight:900;font-size:16px;letter-spacing:.02em;}
-  .wordmark span{color:var(--signal);}
-  .topnav-tag{font-family:'Pretendard', sans-serif;font-size:11.5px;color:#8a8578;letter-spacing:.04em;}
+  .topnav-inner{display:flex;justify-content:space-between;align-items:center;gap:16px;}
+  .brand{display:flex;align-items:center;gap:12px;}
+  .brand-mark{
+    width:38px;height:38px;border-radius:10px;background:var(--sage);color:#fff;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Pretendard', sans-serif;font-weight:800;font-size:18px;flex:none;
+  }
+  .brand-text{display:flex;flex-direction:column;line-height:1.25;}
+  .brand-text b{font-family:'Pretendard', sans-serif;font-weight:800;font-size:15px;letter-spacing:.01em;}
+  .brand-text em{font-style:normal;font-size:11px;color:#8a8578;letter-spacing:.02em;}
+  .topbar-right{display:flex;align-items:center;gap:14px;}
+  .status{
+    font-family:'Pretendard', sans-serif;font-size:11px;color:#8a8578;letter-spacing:.02em;
+    display:flex;align-items:center;gap:6px;
+  }
+  .status i{width:6px;height:6px;border-radius:50%;background:var(--sage);display:inline-block;flex:none;}
+  .ghost-btn{
+    font-family:'Pretendard', sans-serif;font-size:12.5px;font-weight:600;color:var(--sage);
+    border:1px solid var(--sage);padding:7px 16px;border-radius:20px;text-decoration:none;
+  }
+  .ghost-btn:hover{background:var(--sage-tint);}
 
   /* ================= HERO (home) ================= */
   header.hero{padding:64px 0 40px;border-bottom:1px solid var(--line);}
@@ -228,13 +244,18 @@
     color:rgba(255,255,255,.8);font-size:22px;
   }
 
-  footer.site-footer{border-top:1px solid var(--line);padding:26px 0 50px;font-family:'Pretendard', sans-serif;font-size:11.5px;color:#8a8578;}
+  footer.site-footer{border-top:1px solid var(--line);padding:26px 0 40px;font-family:'Pretendard', sans-serif;font-size:11.5px;color:#8a8578;}
+  .footer-inner{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:10px;}
+  .footer-mark{font-family:'Pretendard', sans-serif;font-weight:800;font-size:13px;color:var(--ink);margin:0 0 4px;}
+  .footer-note{margin:0;font-size:11.5px;color:#8a8578;}
 
   /* ================= ADMIN ================= */
   .admin-wrap{padding:44px 0 70px;max-width:640px;}
   .admin-login{max-width:360px;padding-top:80px;}
   .admin-title{font-family:'Pretendard', sans-serif;font-weight:900;font-size:28px;margin:0 0 24px;}
   .admin-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:26px;}
+  .admin-stats{display:flex;gap:18px;flex-wrap:wrap;font-size:12px;color:#4A473F;margin-bottom:22px;}
+  .admin-stats b{color:var(--ink);font-weight:700;font-size:15px;font-family:'Pretendard',sans-serif;}
   .admin-tabs{display:flex;gap:8px;border-bottom:1px solid var(--line);margin-bottom:24px;}
   .admin-tab{
     font-family:'Pretendard', sans-serif;font-size:12.5px;padding:10px 4px;margin-right:18px;
@@ -264,18 +285,35 @@
 
 <nav class="topnav">
   <div class="wrap topnav-inner">
-    <a href="#/" class="wordmark">QUVIA<span>·</span>STUDENT ARCHIVE</a>
-    <span class="topnav-tag" id="dataStatus">CONNECTING…</span>
-    <a href="#/admin" class="mono" style="font-size:11.5px;color:var(--signal);">⚙ 관리자</a>
+    <a href="#/" class="brand" aria-label="큐비아 스튜던트 아카이브 홈으로">
+      <span class="brand-mark">Q</span>
+      <span class="brand-text">
+        <b>QUVIA</b>
+        <em>Student Archive</em>
+      </span>
+    </a>
+    <div class="topbar-right">
+      <span class="status"><i></i><span id="dataStatus">CONNECTING…</span></span>
+      <a href="#/admin" class="ghost-btn">관리자</a>
+    </div>
   </div>
 </nav>
 
 <div class="wrap" id="app"></div>
+<footer class="site-footer">
+  <div class="wrap footer-inner">
+    <div>
+      <p class="footer-mark">QUVIA STUDENT ARCHIVE</p>
+      <p class="footer-note">질문에서 출발한 기록을 학생별로 모아 보관합니다.</p>
+    </div>
+    <p class="footer-note">© QUVIA LAB · 학생 성장 기록 보관소</p>
+  </div>
+</footer>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import {
-  getFirestore, collection, getDocs, addDoc, deleteDoc, doc, serverTimestamp, query, orderBy
+  getFirestore, collection, getDocs, addDoc, updateDoc, deleteDoc, doc, serverTimestamp, query, orderBy
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 import {
   getStorage, ref, uploadBytes, getDownloadURL
@@ -490,23 +528,13 @@ function matchesFilter(s){
 }
 
 function renderHome(){
-  const totalStudents = STUDENTS.length;
-  const totalProjects = PROJECTS.length;
-  const years = PROJECTS.map(p => parseInt((p.date||'').slice(0,4),10)).filter(Boolean);
-  const yearRange = years.length ? `${Math.min(...years)}–${Math.max(...years)}` : '2026–';
-
   app.innerHTML = `
     <header class="hero">
       <div class="hero-grid">
         <div>
           <span class="eyebrow">QUESTION · EXPLORE · CREATE</span>
-          <h1 class="hero-title">질문 하나가,<br>작품 하나가 됩니다</h1>
+          <h1 class="hero-title">학생의 생각이<br>작품이 되는 기록.</h1>
           <p class="hero-desc">궁금한 걸 파고들고, 두 손으로 직접 만들어 보고, 그 과정을 기록합니다.<br>큐비아 학생들의 그 여정이 여기 차곡차곡 쌓여갑니다.</p>
-          <div class="hero-stats mono">
-            <span>등록 학생 <b>${totalStudents}</b>명</span>
-            <span>누적 작품 <b>${totalProjects}</b>개</span>
-            <span>${yearRange} 기록 중</span>
-          </div>
         </div>
         <div class="hero-art">${heroArtSvg()}</div>
       </div>
@@ -520,7 +548,6 @@ function renderHome(){
     </div>
 
     <div class="index-list" id="indexList"></div>
-    <footer class="site-footer">QUVIA STUDENT ARCHIVE — 프론트엔드 프로토타입 (목업 데이터, Firebase 미연동)</footer>
   `;
 
   renderIndexList();
@@ -833,6 +860,9 @@ function renderAdminLogin(){
 }
 
 function renderAdminPanel(){
+  const years = PROJECTS.map(p => parseInt((p.date||'').slice(0,4),10)).filter(Boolean);
+  const yearRange = years.length ? `${Math.min(...years)}–${Math.max(...years)}` : '–';
+
   app.innerHTML = `
     <div class="admin-wrap">
       <div class="admin-head">
@@ -841,6 +871,12 @@ function renderAdminPanel(){
           <span class="mono" style="font-size:12px;color:#8a8578;margin-right:12px;">${esc(currentUser.email)}</span>
           <button class="action-btn outline" id="logoutBtn" style="width:auto;padding:8px 16px;display:inline-flex;">로그아웃</button>
         </div>
+      </div>
+
+      <div class="admin-stats mono">
+        <span>등록 학생 <b>${STUDENTS.length}</b>명</span>
+        <span>누적 작품 <b>${PROJECTS.length}</b>개</span>
+        <span>${yearRange} 기록 중</span>
       </div>
 
       <div class="admin-tabs">
@@ -855,6 +891,7 @@ function renderAdminPanel(){
   document.getElementById('logoutBtn').addEventListener('click', () => signOut(auth));
   document.querySelectorAll('.admin-tab').forEach(btn => {
     btn.addEventListener('click', () => {
+      editingStudentId = null;
       document.querySelectorAll('.admin-tab').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       renderAdminTab(btn.dataset.tab);
@@ -870,31 +907,47 @@ function renderAdminTab(tab){
   if(tab === 'list') return renderAdminList(body);
 }
 
+let editingStudentId = null;
+
 function renderStudentForm(body){
+  const editing = editingStudentId ? STUDENTS.find(s => s.id === editingStudentId) : null;
+
   body.innerHTML = `
     <div class="admin-form">
-      <div class="edit-row"><input type="text" id="f_name" placeholder="이름 (예: 김민준)"></div>
-      <div class="edit-row"><input type="text" id="f_grade" placeholder="학년 표시 텍스트 (예: 초등학교 5학년)"></div>
+      ${editing ? `<div class="admin-msg mono" style="color:var(--signal);margin-bottom:14px;">✏ "${esc(editing.name)}" 학생 정보 수정 중 · <a href="#" id="cancelEditBtn" style="color:var(--signal);text-decoration:underline;">취소</a></div>` : ''}
+      <div class="edit-row"><input type="text" id="f_name" placeholder="이름 (예: 김민준)" value="${esc(editing?.name || '')}"></div>
+      <div class="edit-row"><input type="text" id="f_grade" placeholder="학년 표시 텍스트 (예: 초등학교 5학년)" value="${esc(editing?.grade || '')}"></div>
       <div class="edit-row">
         <select id="f_gradeGroup">
           <option value="preschool">예비초등</option>
-          <option value="elem" selected>초등</option>
+          <option value="elem">초등</option>
           <option value="middle">중등</option>
           <option value="high">고등</option>
           <option value="etc">기타</option>
         </select>
         <select id="f_level">
-          <option>Sense</option><option>Spark</option><option selected>Probe</option><option>Build</option><option>Master</option>
+          <option>Sense</option><option>Spark</option><option>Probe</option><option>Build</option><option>Master</option>
         </select>
       </div>
-      <div class="edit-row"><input type="text" id="f_fields" placeholder="분야 (쉼표로 구분, 예: Python, AI)"></div>
-      <div class="edit-row"><textarea id="f_dream" rows="2" placeholder="학생의 꿈 (예: 사람들에게 도움이 되는 프로그램을 만드는 개발자)" style="width:100%;font-family:inherit;padding:10px;border:1px solid var(--line);border-radius:14px;"></textarea></div>
-      <div class="edit-row"><input type="text" id="f_github" placeholder="깃허브 주소 (예: https://github.com/아이디)"></div>
-      <div class="edit-row"><input type="text" id="f_quviaId" placeholder="큐비아 홈페이지 아이디"></div>
-      <div class="edit-row"><label class="mono" style="font-size:12px;">프로필 이미지 <input type="file" id="f_profileImg" accept="image/*"></label></div>
-      <button class="action-btn" id="saveStudentBtn" style="width:auto;padding:12px 22px;">학생 저장</button>
+      <div class="edit-row"><input type="text" id="f_fields" placeholder="분야 (쉼표로 구분, 예: Python, AI)" value="${esc((editing?.fields || []).join(', '))}"></div>
+      <div class="edit-row"><textarea id="f_dream" rows="2" placeholder="학생의 꿈 (예: 사람들에게 도움이 되는 프로그램을 만드는 개발자)" style="width:100%;font-family:inherit;padding:10px;border:1px solid var(--line);border-radius:14px;">${esc(editing?.dream || '')}</textarea></div>
+      <div class="edit-row"><input type="text" id="f_github" placeholder="깃허브 주소 (예: https://github.com/아이디)" value="${esc(editing?.githubUrl || '')}"></div>
+      <div class="edit-row"><input type="text" id="f_quviaId" placeholder="큐비아 홈페이지 아이디" value="${esc(editing?.quviaId || '')}"></div>
+      <div class="edit-row"><label class="mono" style="font-size:12px;">프로필 이미지${editing?.profileImageUrl ? ' (등록됨 · 새로 올리면 교체)' : ''} <input type="file" id="f_profileImg" accept="image/*"></label></div>
+      <button class="action-btn" id="saveStudentBtn" style="width:auto;padding:12px 22px;">${editing ? '학생 수정' : '학생 저장'}</button>
       <div class="admin-msg mono" id="studentMsg"></div>
     </div>`;
+
+  // select 기본값을 편집 대상 값으로 맞춘다 (option에 selected를 문자열로 넣기 번거로워 JS로 처리)
+  document.getElementById('f_gradeGroup').value = editing?.gradeGroup || 'elem';
+  document.getElementById('f_level').value = editing?.level || 'Probe';
+
+  const cancelBtn = document.getElementById('cancelEditBtn');
+  if(cancelBtn) cancelBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    editingStudentId = null;
+    renderStudentForm(body);
+  });
 
   document.getElementById('saveStudentBtn').addEventListener('click', async () => {
     const msg = document.getElementById('studentMsg');
@@ -902,7 +955,7 @@ function renderStudentForm(body){
     if(!name){ msg.textContent = '이름을 입력하세요.'; return; }
     msg.textContent = '저장 중…';
     try{
-      let profileImageUrl = '';
+      let profileImageUrl = editing?.profileImageUrl || '';
       const file = document.getElementById('f_profileImg').files[0];
       if(file){
         const path = `students/${Date.now()}_${file.name}`;
@@ -910,7 +963,7 @@ function renderStudentForm(body){
         await uploadBytes(sref, file);
         profileImageUrl = await getDownloadURL(sref);
       }
-      await addDoc(collection(db,'students'), {
+      const data = {
         name,
         grade: document.getElementById('f_grade').value.trim(),
         gradeGroup: document.getElementById('f_gradeGroup').value,
@@ -920,10 +973,17 @@ function renderStudentForm(body){
         githubUrl: document.getElementById('f_github').value.trim(),
         quviaId: document.getElementById('f_quviaId').value.trim(),
         profileImageUrl,
-        isPublic: true,
-        createdAt: serverTimestamp()
-      });
-      msg.textContent = '저장 완료.';
+        isPublic: true
+      };
+
+      if(editing){
+        await updateDoc(doc(db,'students', editing.id), data);
+        msg.textContent = '수정 완료.';
+      } else {
+        await addDoc(collection(db,'students'), { ...data, createdAt: serverTimestamp() });
+        msg.textContent = '저장 완료.';
+      }
+      editingStudentId = null;
       await loadData();
     }catch(err){
       console.error(err);
@@ -1059,7 +1119,10 @@ function renderAdminList(body){
       ${STUDENTS.map(s => `
         <div class="admin-list-row">
           <span>${esc(s.name)} <span class="mono" style="color:#8a8578;">· ${esc(s.grade||'')}</span></span>
-          <button class="del-btn mono" data-col="students" data-id="${esc(s.id)}">삭제</button>
+          <span style="display:flex;gap:6px;">
+            <button class="del-btn mono edit-student-btn" data-id="${esc(s.id)}" style="color:var(--signal);border-color:var(--signal);">수정</button>
+            <button class="del-btn mono" data-col="students" data-id="${esc(s.id)}">삭제</button>
+          </span>
         </div>`).join('') || '<div class="demo-note">등록된 학생이 없습니다.</div>'}
 
       <h3 class="mono" style="margin-top:26px;">작품 (${PROJECTS.length})</h3>
@@ -1070,7 +1133,16 @@ function renderAdminList(body){
         </div>`).join('') || '<div class="demo-note">등록된 작품이 없습니다.</div>'}
     </div>`;
 
-  body.querySelectorAll('.del-btn').forEach(btn => {
+  body.querySelectorAll('.edit-student-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      editingStudentId = btn.dataset.id;
+      document.querySelectorAll('.admin-tab').forEach(b => b.classList.remove('active'));
+      document.querySelector('.admin-tab[data-tab="student"]').classList.add('active');
+      renderAdminTab('student');
+    });
+  });
+
+  body.querySelectorAll('.del-btn:not(.edit-student-btn)').forEach(btn => {
     btn.addEventListener('click', async () => {
       if(!confirm('정말 삭제할까요? 되돌릴 수 없습니다.')) return;
       await deleteDoc(doc(db, btn.dataset.col, btn.dataset.id));
