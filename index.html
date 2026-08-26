@@ -13,11 +13,11 @@
     --paper:#FBF8F0;
     --stone:#F2EEE1;
     --line:#E4DFCE;
-    --signal:#8B7FC9;
-    --signal-bright:#A79BE0;
-    --signal-tint:#EEEBFA;
-    --sage:#7E9B84;
-    --sage-tint:#E6EEE4;
+    --signal:#5F8567;
+    --signal-bright:#4C6F53;
+    --signal-tint:#E3ECE3;
+    --sage:#5F8567;
+    --sage-tint:#E3ECE3;
     --cream-card:#FDF9EC;
     --white:#FFFFFF;
   }
@@ -104,6 +104,16 @@
     width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;
     font-family:'Pretendard', sans-serif;font-weight:800;font-size:18px;color:#fff;flex:none;
   }
+  .dream-oval{
+    display:inline-flex;align-items:center;justify-content:center;text-align:center;
+    padding:12px 18px;border-radius:999px;background:var(--sage);color:#fff;
+    font-size:12.5px;font-weight:600;line-height:1.35;min-height:44px;width:100%;
+  }
+  .dream-oval-lg{
+    display:inline-flex;align-items:center;justify-content:center;text-align:center;
+    padding:16px 26px;border-radius:999px;background:var(--sage);color:#fff;
+    font-size:14px;font-weight:600;line-height:1.4;min-height:60px;max-width:280px;
+  }
   .index-main h3{font-family:'Pretendard', sans-serif;font-weight:800;font-size:19px;margin:0 0 4px;}
   .index-meta-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
   .grade-txt{font-size:13px;color:#4A473F;}
@@ -131,6 +141,7 @@
   .profile-info h1{font-family:'Pretendard', sans-serif;font-weight:900;font-size:34px;margin:0 0 8px;}
   .profile-sub{display:flex;gap:10px;align-items:center;margin-bottom:14px;flex-wrap:wrap;}
   .profile-intro{max-width:480px;font-size:14.5px;line-height:1.75;color:#4A473F;margin:0 0 16px;}
+  .profile-links{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;}
   .profile-counts{display:flex;gap:26px;flex-wrap:wrap;}
   .profile-counts div{font-family:'Pretendard', sans-serif;font-size:12px;color:#8a8578;}
   .profile-counts b{display:block;font-family:'Pretendard', sans-serif;font-size:22px;color:var(--ink);font-weight:800;}
@@ -172,17 +183,16 @@
 
   /* ================= PROJECT DETAIL ================= */
   .proj-hero{
-    padding:36px 0 0;
+    padding:36px 0 20px;
+    border-bottom:1px solid var(--line);
   }
-  .proj-hero-img{
-    width:100%;height:280px;border-radius:14px;margin:20px 0 30px;
-    display:flex;align-items:center;justify-content:center;font-size:52px;color:rgba(255,255,255,.85);
-    object-fit:cover;
+  .side-thumb{
+    width:100%;height:190px;border-radius:14px;margin-bottom:22px;object-fit:cover;
   }
   h1.proj-title{font-family:'Pretendard', sans-serif;font-weight:900;font-size:clamp(26px,4vw,40px);margin:0 0 10px;line-height:1.12;}
   .proj-top-meta{display:flex;gap:10px;align-items:center;margin-bottom:20px;flex-wrap:wrap;}
 
-  .proj-body{display:grid;grid-template-columns:1fr 260px;gap:48px;padding:10px 0 70px;}
+  .proj-body{display:grid;grid-template-columns:1fr 1fr;gap:48px;padding:30px 0 70px;}
   @media (max-width:760px){ .proj-body{grid-template-columns:1fr;} }
   .proj-section{margin-bottom:30px;}
   .proj-section h3{
@@ -191,7 +201,7 @@
   }
   .proj-section p{font-size:14.5px;line-height:1.8;color:#2b291f;margin:0;white-space:pre-line;}
 
-  .side-box{border-top:1px solid var(--line);padding-top:22px;}
+  .side-box{display:flex;flex-direction:column;}
   .side-label{font-family:'Pretendard', sans-serif;font-size:11px;letter-spacing:.08em;color:#8a8578;text-transform:uppercase;margin-bottom:10px;}
   .chip-wrap{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:24px;}
   .chip-plain{
@@ -307,32 +317,38 @@ const MOCK_STUDENTS = [
   {
     id:'minjun', name:'김민준', grade:'초등학교 5학년', gradeGroup:'elem',
     level:'Build', fields:['Python','AI'],
-    intro:'코딩과 AI를 활용하여 내가 발견한 문제를 직접 해결하는 프로젝트를 만들고 있습니다.',
+    dream:'사람들의 문제를 해결하는 AI 개발자',
+    githubUrl:'https://github.com/minjun-dev', quviaId:'minjun_k',
   },
   {
     id:'seoyeon', name:'박서연', grade:'초등학교 3학년', gradeGroup:'elem',
     level:'Spark', fields:['엔트리'],
-    intro:'로봇과 게임을 만드는 게 제일 재미있어요. 다음엔 메타버스 맵을 만들 거예요.',
+    dream:'재미있는 게임을 만드는 게임 개발자',
+    githubUrl:'', quviaId:'seoyeon_p',
   },
   {
     id:'jiho', name:'이지호', grade:'중학교 1학년', gradeGroup:'middle',
     level:'Master', fields:['Python','AI','탐구활동'],
-    intro:'머신러닝 모델을 직접 학습시켜보고, 그 원리를 탐구보고서로 정리하는 걸 좋아합니다.',
+    dream:'머신러닝 연구자가 되어 세상을 이롭게 하는 모델을 만들고 싶어요',
+    githubUrl:'https://github.com/jiho-lee', quviaId:'jiho_l',
   },
   {
     id:'hana', name:'최하나', grade:'초등학교 6학년', gradeGroup:'elem',
     level:'Build', fields:['Arduino','AI','3D모델링'],
-    intro:'아두이노와 AI를 연결해서 실생활 문제를 해결하는 작품을 만듭니다.',
+    dream:'환경 문제를 해결하는 로봇 공학자',
+    githubUrl:'', quviaId:'hana_c',
   },
   {
     id:'yuna', name:'정유나', grade:'7세 (예비초등)', gradeGroup:'preschool',
     level:'Sense', fields:['ScratchJr'],
-    intro:'블록으로 순서를 만들어서 캐릭터를 움직이는 게 재미있어요.',
+    dream:'멋진 캐릭터를 움직이는 애니메이션 작가',
+    githubUrl:'', quviaId:'yuna_j',
   },
   {
     id:'siwoo', name:'한시우', grade:'고등학교 1학년', gradeGroup:'high',
     level:'Master', fields:['Python','알고리즘'],
-    intro:'SW 경진대회 출품을 목표로 알고리즘과 데이터 분석을 공부하고 있습니다.',
+    dream:'효율적인 알고리즘으로 세상의 속도를 높이는 엔지니어',
+    githubUrl:'https://github.com/siwoo-han', quviaId:'siwoo_h',
   }
 ];
 
@@ -510,13 +526,11 @@ function renderIndexList(){
 
   list.innerHTML = filtered.map((s, i) => {
     const c = counts(s.id);
-    const avatarBig = s.profileImageUrl
-      ? `<img src="${s.profileImageUrl}" alt="${esc(s.name)}" style="width:56px;height:56px;border-radius:50%;object-fit:cover;">`
-      : `<span class="avatar" style="width:56px;height:56px;font-size:20px;background:${levelColor(s.level)}">${esc(initial(s.name))}</span>`;
+    const dreamOval = `<span class="dream-oval">${esc(s.dream || '꿈을 입력해주세요')}</span>`;
     return `
     <button class="index-row" data-id="${s.id}">
       <span class="index-no mono">NO. ${String(i+1).padStart(3,'0')}</span>
-      ${avatarBig}
+      ${dreamOval}
       <span class="index-main">
         <h3>${esc(s.name)}</h3>
         <span class="index-meta-row">
@@ -558,7 +572,7 @@ function renderStudent(id){
     <button class="back-btn" onclick="location.hash='#/'">← 학생 목록으로</button>
 
     <div class="profile-head">
-      <span class="avatar-lg" style="background:${levelColor(s.level)}">${esc(initial(s.name))}</span>
+      <span class="dream-oval-lg">${esc(s.dream || '꿈을 입력해주세요')}</span>
       <div class="profile-info">
         <h1>${esc(s.name)}</h1>
         <div class="profile-sub">
@@ -566,7 +580,10 @@ function renderStudent(id){
           <span class="level-badge mono">LEVEL · ${esc(s.level)}</span>
           ${s.fields.map(f => `<span class="field-tag mono">${esc(f)}</span>`).join('')}
         </div>
-        <p class="profile-intro">${esc(s.intro)}</p>
+        <div class="profile-links">
+          ${s.githubUrl ? `<a href="${esc(s.githubUrl)}" target="_blank" rel="noopener" class="chip-plain mono">⌘ GitHub · ${esc(s.githubUrl.replace(/^https?:\/\//,''))}</a>` : ''}
+          ${s.quviaId ? `<span class="chip-plain mono">🎓 QUVIA ID · ${esc(s.quviaId)}</span>` : ''}
+        </div>
         <div class="profile-counts">
           <div>PROJECTS<b>${c.total}</b></div>
           <div>PROGRAMS<b>${c.program}</b></div>
@@ -657,9 +674,6 @@ function renderProject(studentId, projectId){
   app.innerHTML = `
     <div class="proj-hero">
       <button class="back-btn" onclick="location.hash='#/student/${s.id}'">← ${esc(s.name)}의 포트폴리오로</button>
-      ${p.thumbnailUrl
-        ? `<img class="proj-hero-img" src="${p.thumbnailUrl}" alt="${esc(p.title)}">`
-        : `<div class="proj-hero-img" style="background:${levelColor(s.level)}">${meta.icon}</div>`}
       <h1 class="proj-title">${esc(p.title)}</h1>
       <div class="proj-top-meta">
         <span class="type-tag ${p.type} mono">${meta.label}</span>
@@ -685,6 +699,10 @@ function renderProject(studentId, projectId){
       </div>
 
       <div class="side-box">
+        ${p.thumbnailUrl
+          ? `<img class="side-thumb" src="${p.thumbnailUrl}" alt="${esc(p.title)}">`
+          : `<div class="side-thumb" style="background:${levelColor(s.level)};display:flex;align-items:center;justify-content:center;font-size:40px;color:rgba(255,255,255,.85);">${meta.icon}</div>`}
+
         ${p.techStack && p.techStack.length ? `
         <div class="side-label mono">사용 기술</div>
         <div class="chip-wrap">${p.techStack.map(t=>`<span class="chip-plain mono">${esc(t)}</span>`).join('')}</div>` : ''}
@@ -830,7 +848,9 @@ function renderStudentForm(body){
         </select>
       </div>
       <div class="edit-row"><input type="text" id="f_fields" placeholder="분야 (쉼표로 구분, 예: Python, AI)"></div>
-      <div class="edit-row"><textarea id="f_intro" rows="3" placeholder="자기소개" style="width:100%;font-family:inherit;padding:10px;border:1px solid var(--line);border-radius:14px;"></textarea></div>
+      <div class="edit-row"><textarea id="f_dream" rows="2" placeholder="학생의 꿈 (예: 사람들에게 도움이 되는 프로그램을 만드는 개발자)" style="width:100%;font-family:inherit;padding:10px;border:1px solid var(--line);border-radius:14px;"></textarea></div>
+      <div class="edit-row"><input type="text" id="f_github" placeholder="깃허브 주소 (예: https://github.com/아이디)"></div>
+      <div class="edit-row"><input type="text" id="f_quviaId" placeholder="큐비아 홈페이지 아이디"></div>
       <div class="edit-row"><label class="mono" style="font-size:12px;">프로필 이미지 <input type="file" id="f_profileImg" accept="image/*"></label></div>
       <button class="action-btn" id="saveStudentBtn" style="width:auto;padding:12px 22px;">학생 저장</button>
       <div class="admin-msg mono" id="studentMsg"></div>
@@ -856,7 +876,9 @@ function renderStudentForm(body){
         gradeGroup: document.getElementById('f_gradeGroup').value,
         level: document.getElementById('f_level').value,
         fields: document.getElementById('f_fields').value.split(',').map(s=>s.trim()).filter(Boolean),
-        intro: document.getElementById('f_intro').value.trim(),
+        dream: document.getElementById('f_dream').value.trim(),
+        githubUrl: document.getElementById('f_github').value.trim(),
+        quviaId: document.getElementById('f_quviaId').value.trim(),
         profileImageUrl,
         isPublic: true,
         createdAt: serverTimestamp()
