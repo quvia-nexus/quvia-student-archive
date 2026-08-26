@@ -70,7 +70,10 @@
   .ghost-btn:hover{background:rgba(255,255,255,.08);}
 
   /* ================= HERO (home) ================= */
-  header.hero{padding:64px 0 56px;background:var(--dark-bg);}
+  header.hero{
+    padding:64px 0 56px;background:var(--dark-bg);
+    width:100vw;position:relative;left:50%;right:50%;margin-left:-50vw;margin-right:-50vw;
+  }
   .eyebrow{
     font-family:'Pretendard', sans-serif;font-weight:700;font-size:12.5px;letter-spacing:.18em;color:var(--gold);
     margin-bottom:22px;display:flex;align-items:center;gap:10px;
@@ -551,13 +554,15 @@ function matchesFilter(s){
 function renderHome(){
   app.innerHTML = `
     <header class="hero">
-      <div class="hero-grid">
-        <div>
-          <span class="eyebrow">QUESTION · EXPLORE · CREATE</span>
-          <h1 class="hero-title">학생의 생각이<br><span class="hero-highlight">작품이 되는</span> 기록.</h1>
-          <p class="hero-desc">궁금한 걸 파고들고, 두 손으로 직접 만들어 보고, 그 과정을 기록합니다.<br>큐비아 학생들의 그 여정이 여기 차곡차곡 쌓여갑니다.</p>
+      <div class="wrap">
+        <div class="hero-grid">
+          <div>
+            <span class="eyebrow">QUESTION · EXPLORE · CREATE</span>
+            <h1 class="hero-title">학생의 생각이<br><span class="hero-highlight">작품이 되는</span> 기록.</h1>
+            <p class="hero-desc">궁금한 걸 파고들고, 두 손으로 직접 만들어 보고, 그 과정을 기록합니다.<br>큐비아 학생들의 그 여정이 여기 차곡차곡 쌓여갑니다.</p>
+          </div>
+          <div class="hero-art">${growthPathArt()}</div>
         </div>
-        <div class="hero-art">${growthPathArt()}</div>
       </div>
     </header>
 
