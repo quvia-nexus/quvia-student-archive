@@ -670,6 +670,8 @@ function renderProject(studentId, projectId){
 let currentUser = null;
 if(isConfigured){
   onAuthStateChanged(auth, (user) => {
+    const prevUid = currentUser ? currentUser.uid : null;
+
     if(user && ADMIN_EMAILS.length && !ADMIN_EMAILS.includes(user.email)){
       signOut(auth);
       currentUser = null;
@@ -680,8 +682,13 @@ if(isConfigured){
       }
       return;
     }
+
     currentUser = user;
-    if(location.hash.startsWith('#/admin')) renderAdmin();
+    const newUid = currentUser ? currentUser.uid : null;
+    // 실제로 로그인/로그아웃 상태가 바뀐 경우에만 다시 그린다.
+    // (그렇지 않으면 Firebase의 초기 상태 확인 콜백이 뒤늦게 도착해서
+    //  사용자가 입력 중이던 이메일/비밀번호를 지워버리는 문제가 생김)
+    if(prevUid !== newUid && location.hash.startsWith('#/admin')) renderAdmin();
   });
 }
 
