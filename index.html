@@ -351,6 +351,15 @@
   }
   .edit-row input:focus{border-color:var(--signal);}
   .grade-btn-group{display:flex;gap:6px;flex-wrap:wrap;}
+  .student-check-list{
+    max-height:220px;overflow-y:auto;border:1px solid var(--line);border-radius:14px;
+    padding:8px;background:#fff;display:grid;grid-template-columns:repeat(2, 1fr);gap:2px;
+  }
+  .student-check-item{
+    display:flex;align-items:center;gap:8px;padding:7px 8px;border-radius:8px;font-size:13px;cursor:pointer;
+  }
+  .student-check-item:hover{background:var(--stone);}
+  .student-check-item input{flex:none;width:15px;height:15px;accent-color:var(--signal);}
   .admin-form select{
     font-family:'Pretendard', sans-serif;font-size:13.5px;padding:9px 10px;border:1px solid var(--line);
     border-radius:14px;background:var(--white);flex:1;min-width:140px;
@@ -1266,11 +1275,26 @@ function renderAdminTab(tab){
 }
 
 function renderProjectForm(body){
-  const studentOptions = STUDENTS.map(s => `<option value="${esc(s.id)}">${esc(s.name)}</option>`).join('');
+  const studentCheckboxes = STUDENTS.map(s => `
+    <label class="student-check-item">
+      <input type="checkbox" class="f-student-check" value="${esc(s.id)}">
+      <span>${esc(s.name)} <span class="mono" style="color:#8a8578;font-size:10.5px;">${esc(s.grade||'')}</span></span>
+    </label>
+  `).join('');
+
   body.innerHTML = `
     <div class="admin-form">
+      <div class="side-label mono" style="margin-bottom:6px;">등록 대상 학생 (여러 명 선택 가능 · 팀 프로젝트는 팀원 전체 체크)</div>
+      <div class="edit-row" style="margin-bottom:6px;">
+        <input type="text" id="f_studentSearch" placeholder="이름으로 검색…" style="flex:1;">
+        <button type="button" class="action-btn outline" id="f_selectAllBtn" style="width:auto;padding:9px 14px;">전체 선택</button>
+      </div>
+      <div class="student-check-list" id="studentCheckList">
+        ${studentCheckboxes || '<div class="demo-note">등록된 학생이 없습니다.</div>'}
+      </div>
+      <div class="mono" id="f_selectedCount" style="font-size:11.5px;color:#8a8578;margin:6px 0 16px;">선택됨 0명</div>
+
       <div class="edit-row">
-        <select id="f_studentId">${studentOptions || '<option disabled>등록된 학생이 없습니다</option>'}</select>
         <select id="f_type">
           <option value="program">프로젝트</option>
           <option value="presentation">발표자료</option>
@@ -1288,6 +1312,27 @@ function renderProjectForm(body){
       <button class="action-btn" id="saveProjectBtn" style="width:auto;padding:12px 22px;">작품 저장</button>
       <div class="admin-msg mono" id="projectMsg"></div>
     </div>`;
+
+  function updateSelectedCount(){
+    const n = body.querySelectorAll('.f-student-check:checked').length;
+    document.getElementById('f_selectedCount').textContent = `선택됨 ${n}명`;
+  }
+  body.querySelectorAll('.f-student-check').forEach(cb => cb.addEventListener('change', updateSelectedCount));
+
+  document.getElementById('f_selectAllBtn').addEventListener('click', () => {
+    const boxes = Array.from(body.querySelectorAll('.student-check-item')).filter(el => el.style.display !== 'none').map(el => el.querySelector('.f-student-check'));
+    const allChecked = boxes.length > 0 && boxes.every(cb => cb.checked);
+    boxes.forEach(cb => { cb.checked = !allChecked; });
+    updateSelectedCount();
+  });
+
+  document.getElementById('f_studentSearch').addEventListener('input', (e) => {
+    const q = e.target.value.trim().toLowerCase();
+    body.querySelectorAll('.student-check-item').forEach(item => {
+      const name = item.textContent.toLowerCase();
+      item.style.display = name.includes(q) ? '' : 'none';
+    });
+  });
 
   function renderTypeFields(){
     const type = document.getElementById('f_type').value;
@@ -1313,10 +1358,10 @@ function renderProjectForm(body){
 
   document.getElementById('saveProjectBtn').addEventListener('click', async () => {
     const msg = document.getElementById('projectMsg');
-    const studentId = document.getElementById('f_studentId').value;
+    const studentIds = Array.from(body.querySelectorAll('.f-student-check:checked')).map(cb => cb.value);
     const title = document.getElementById('f_title').value.trim();
-    if(!studentId || !title){ msg.textContent = '학생과 제목은 필수입니다.'; return; }
-    msg.textContent = '저장 중… (파일이 있으면 시간이 걸릴 수 있습니다)';
+    if(studentIds.length === 0 || !title){ msg.textContent = '학생을 1명 이상 선택하고 제목을 입력하세요.'; return; }
+    msg.textContent = `저장 중… (학생 ${studentIds.length}명 · 파일이 있으면 시간이 걸릴 수 있습니다)`;
     const type = document.getElementById('f_type').value;
 
     async function uploadIfPresent(inputId, folder){
@@ -1329,8 +1374,8 @@ function renderProjectForm(body){
     }
 
     try{
-      const data = {
-        studentId, type, title,
+      const baseData = {
+        type, title,
         date: document.getElementById('f_date').value || new Date().toISOString().slice(0,10),
         description: document.getElementById('f_desc').value.trim(),
         process: document.getElementById('f_process').value.trim(),
@@ -1342,19 +1387,23 @@ function renderProjectForm(body){
       };
 
       if(type === 'program'){
-        data.playUrl = document.getElementById('f_play').value.trim();
-        data.docxUrl = await uploadIfPresent('f_docx', 'programs');
-        data.pdfUrl = await uploadIfPresent('f_pdf', 'programs');
+        baseData.playUrl = document.getElementById('f_play').value.trim();
+        baseData.docxUrl = await uploadIfPresent('f_docx', 'programs');
+        baseData.pdfUrl = await uploadIfPresent('f_pdf', 'programs');
       } else if(type === 'report'){
-        data.docxUrl = await uploadIfPresent('f_docx', 'reports');
-        data.pdfUrl = await uploadIfPresent('f_pdf', 'reports');
+        baseData.docxUrl = await uploadIfPresent('f_docx', 'reports');
+        baseData.pdfUrl = await uploadIfPresent('f_pdf', 'reports');
       } else if(type === 'presentation'){
-        data.pptxUrl = await uploadIfPresent('f_pptx', 'presentations');
-        data.pdfUrl = await uploadIfPresent('f_pdf', 'presentations');
+        baseData.pptxUrl = await uploadIfPresent('f_pptx', 'presentations');
+        baseData.pdfUrl = await uploadIfPresent('f_pdf', 'presentations');
       }
 
-      await addDoc(collection(db,'projects'), data);
-      msg.textContent = '저장 완료.';
+      // 파일 업로드는 한 번만, 선택된 학생 수만큼 문서를 각각 생성 (팀 프로젝트 → 팀원 전체에게 동일하게 등록)
+      for(const studentId of studentIds){
+        await addDoc(collection(db,'projects'), { ...baseData, studentId });
+      }
+
+      msg.textContent = `${studentIds.length}명에게 등록 완료.`;
       await loadData();
     }catch(err){
       console.error(err);
