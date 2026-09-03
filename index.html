@@ -132,6 +132,12 @@
   .index-list{padding:8px 0 80px;display:grid;grid-template-columns:repeat(4, 1fr);gap:16px;}
   @media (max-width:900px){ .index-list{grid-template-columns:repeat(2, 1fr);} }
   @media (max-width:520px){ .index-list{grid-template-columns:1fr;} }
+  .index-toggle-btn{
+    display:block;width:100%;text-align:center;padding:14px;margin-top:8px;
+    background:var(--stone);border:1px dashed var(--line);border-radius:14px;
+    font-size:12.5px;color:var(--ink);cursor:pointer;
+  }
+  .index-toggle-btn:hover{background:var(--signal-tint);border-color:var(--signal);}
   .index-row{
     display:flex;flex-direction:column;align-items:flex-start;gap:10px;
     padding:22px;border:1px solid var(--line);border-radius:16px;cursor:pointer;
@@ -669,6 +675,14 @@ function counts(studentId){
    ================================================================ */
 let activeFilter = '전체';
 let searchQuery = '';
+let showAllStudents = false;
+const HOME_LIMIT = 8;
+
+function latestActivityDate(sid){
+  const list = PROJECTS.filter(p => p.studentId === sid);
+  if(!list.length) return '';
+  return list.reduce((max,p) => (p.date||'') > max ? (p.date||'') : max, '');
+}
 
 function matchesFilter(s){
   if(activeFilter === '전체') return true;
@@ -702,10 +716,11 @@ function renderHome(){
 
   document.getElementById('searchInput').addEventListener('input', (e) => {
     searchQuery = e.target.value;
+    showAllStudents = false;
     renderIndexList();
   });
   document.querySelectorAll('#filters .filter-chip').forEach(btn => {
-    btn.addEventListener('click', () => { activeFilter = btn.dataset.f; renderHome(); });
+    btn.addEventListener('click', () => { activeFilter = btn.dataset.f; showAllStudents = false; renderHome(); });
   });
 }
 
@@ -744,14 +759,18 @@ function growthPathArt(){
 function renderIndexList(){
   const list = document.getElementById('indexList');
   const q = searchQuery.trim().toLowerCase();
-  const filtered = STUDENTS.filter(s => matchesFilter(s) && s.name.toLowerCase().includes(q));
+  const filtered = STUDENTS.filter(s => matchesFilter(s) && s.name.toLowerCase().includes(q))
+    .sort((a,b) => latestActivityDate(b.id).localeCompare(latestActivityDate(a.id)));
 
   if(filtered.length === 0){
     list.innerHTML = `<div class="demo-note" style="padding:30px 0;">검색 결과가 없습니다.</div>`;
     return;
   }
 
-  list.innerHTML = filtered.map((s, i) => {
+  const isLimited = !showAllStudents && filtered.length > HOME_LIMIT;
+  const visible = isLimited ? filtered.slice(0, HOME_LIMIT) : filtered;
+
+  list.innerHTML = visible.map((s, i) => {
     const c = counts(s.id);
     const dreamOval = `<span class="dream-oval">${esc(s.dream || '꿈을 입력해주세요')}</span>`;
     return `
@@ -773,11 +792,22 @@ function renderIndexList(){
         <span>보고서<b>${c.report}</b></span>
       </span>
     </button>`;
-  }).join('');
+  }).join('') + (
+    filtered.length > HOME_LIMIT
+      ? `<button class="index-toggle-btn mono" id="toggleShowAll">${showAllStudents ? '접기 ▲' : `전체 학생 보기 (${filtered.length}명) ▼`}</button>`
+      : ''
+  );
 
   list.querySelectorAll('.index-row').forEach(el => {
     el.addEventListener('click', () => { location.hash = `#/student/${el.dataset.id}`; });
   });
+  const toggleBtn = document.getElementById('toggleShowAll');
+  if(toggleBtn){
+    toggleBtn.addEventListener('click', () => {
+      showAllStudents = !showAllStudents;
+      renderIndexList();
+    });
+  }
 }
 
 /* ================================================================
